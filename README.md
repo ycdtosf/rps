@@ -26,3 +26,4 @@
 * Asynchronous
 * Auditable
 * Privacy (can't snoop on opponent's play)
+    * Users should not have write access to Player.Status
