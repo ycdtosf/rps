@@ -11,10 +11,10 @@
             <name>Tie</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Move__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>Load_Outcomes</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <elementReference>Load_Other_Player_Move.Move__c</elementReference>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -70,7 +70,7 @@
     <decisions>
         <name>Other_Player_Status</name>
         <label>Other Player Status</label>
-        <locationX>666</locationX>
+        <locationX>710</locationX>
         <locationY>455</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -129,7 +129,7 @@
     <recordLookups>
         <name>Get_Other_Player</name>
         <label>Get Other Player</label>
-        <locationX>666</locationX>
+        <locationX>710</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -145,7 +145,7 @@
         </filters>
         <filters>
             <field>Id</field>
-            <operator>EqualTo</operator>
+            <operator>NotEqualTo</operator>
             <value>
                 <elementReference>$Record.Player__c</elementReference>
             </value>
@@ -218,6 +218,48 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Update_Game_Status_to_Completed</name>
+        <label>Update Game Status to Completed</label>
+        <locationX>710</locationX>
+        <locationY>1511</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Player__r.Game__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Game__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Game_Status_to_Tie</name>
+        <label>Update Game Status to Tie</label>
+        <locationX>314</locationX>
+        <locationY>1175</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Player__r.Game__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Tie</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Game__c</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Incoming_Player_as_Loser</name>
         <label>Update Incoming Player as Loser</label>
         <locationX>842</locationX>
@@ -233,6 +275,12 @@
                 <elementReference>$Record.Player__c</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <field>Move__c</field>
+            <value>
+                <elementReference>$Record.Move__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Status__c</field>
             <value>
@@ -258,6 +306,12 @@
             </value>
         </filters>
         <inputAssignments>
+            <field>Move__c</field>
+            <value>
+                <elementReference>$Record.Move__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Status__c</field>
             <value>
                 <stringValue>Tie</stringValue>
@@ -282,6 +336,12 @@
             </value>
         </filters>
         <inputAssignments>
+            <field>Move__c</field>
+            <value>
+                <elementReference>$Record.Move__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Status__c</field>
             <value>
                 <stringValue>Winner</stringValue>
@@ -294,6 +354,9 @@
         <label>Update Other Player as Loser</label>
         <locationX>578</locationX>
         <locationY>1055</locationY>
+        <connector>
+            <targetReference>Update_Game_Status_to_Completed</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -302,6 +365,12 @@
                 <elementReference>Get_Other_Player.Id</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <field>Move__c</field>
+            <value>
+                <elementReference>Load_Other_Player_Move.Move__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Status__c</field>
             <value>
@@ -315,6 +384,9 @@
         <label>Update Other Player as Tie</label>
         <locationX>314</locationX>
         <locationY>1055</locationY>
+        <connector>
+            <targetReference>Update_Game_Status_to_Tie</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -323,6 +395,12 @@
                 <elementReference>Get_Other_Player.Id</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <field>Move__c</field>
+            <value>
+                <elementReference>Load_Other_Player_Move.Move__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Status__c</field>
             <value>
@@ -336,6 +414,9 @@
         <label>Update Other Player as Winner</label>
         <locationX>842</locationX>
         <locationY>1055</locationY>
+        <connector>
+            <targetReference>Update_Game_Status_to_Completed</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -344,6 +425,12 @@
                 <elementReference>Get_Other_Player.Id</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <field>Move__c</field>
+            <value>
+                <elementReference>Load_Other_Player_Move.Move__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Status__c</field>
             <value>
@@ -374,7 +461,7 @@
         <object>Player__c</object>
     </recordUpdates>
     <start>
-        <locationX>540</locationX>
+        <locationX>584</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Other_Player</targetReference>
@@ -383,5 +470,5 @@
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>

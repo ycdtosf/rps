@@ -12,8 +12,10 @@
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <label>RPS</label>
     <navType>Standard</navType>
+    <tabs>RPS_Arena</tabs>
     <tabs>Move__c</tabs>
     <tabs>Game__c</tabs>
+    <tabs>Player__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>RPS_UtilityBar</utilityBar>
 </CustomApplication>

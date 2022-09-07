@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>PlayerMove__c</fullName>
+    <fullName>Opponent__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
-    <label>Player Move</label>
-    <referenceTo>PlayerMove__c</referenceTo>
-    <relationshipLabel>Players</relationshipLabel>
-    <relationshipName>Players</relationshipName>
+    <label>Opponent</label>
+    <referenceTo>Player__c</referenceTo>
+    <relationshipLabel>Opponents</relationshipLabel>
+    <relationshipName>Opponents</relationshipName>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Lookup</type>
