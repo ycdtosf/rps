@@ -37,6 +37,27 @@
         </outputAssignments>
         <valueField>Id</valueField>
     </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>userChoices</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputAssignments>
+            <assignToReference>selectedUserName</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
     <environments>Default</environments>
     <interviewLabel>New RPS Game {!$Flow.CurrentDateTime}</interviewLabel>
     <label>New RPS Game</label>
@@ -122,7 +143,7 @@
         <inputAssignments>
             <field>User__c</field>
             <value>
-                <elementReference>userLookup.recordId</elementReference>
+                <elementReference>ChooseOpponent2</elementReference>
             </value>
         </inputAssignments>
         <object>Player__c</object>
@@ -223,6 +244,24 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>$Flow.CurrentDate</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>ChooseOpponent2</name>
+            <choiceReferences>userChoices</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Choose...</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
         </fields>
         <nextOrFinishButtonLabel>Begin Battle!</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
@@ -286,7 +325,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>dt4</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!$User.FirstName} plays {!selectedMoveName}!&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;You opponent, {!userLookup.recordName}, has been summoned to answer the call to battle.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;STAY TUNED...&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;{!$User.FirstName} plays {!selectedMoveName}!&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;You opponent, {!selectedUserName}, has been summoned to answer the call to battle.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;STAY TUNED...&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -302,6 +341,13 @@
     <status>Active</status>
     <variables>
         <name>selectedMoveName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>selectedUserName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

@@ -27,3 +27,13 @@
 * Auditable
 * Privacy (can't snoop on opponent's play)
     * Users should not have write access to Player.Status
+
+
+# Backlog
+* Create "RPS User" permission set DONE
+* LWC for "RPS Arena"
+* Tournament play?
+* Expand "New Game" flow (not always end-user-initiated)
+* Private Games: share with Players
+* RPS Settings Panel
+* Choose visibility on the Game

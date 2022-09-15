@@ -8,3 +8,6 @@
 string tempvar = 'Enter_your_name_here';
 System.debug('Hello World!');
 System.debug('My name is ' + tempvar);
+
+delete [select Id from Game__c];
+delete [select Id from PlayerMove__c];
