@@ -1,0 +1,41 @@
+<template>
+    <div key={game.gameId} class={containerStyle}>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-align_absolute-center slds-col slds-size_1-of-8">
+                <lightning-icon icon-name={outcomeIcon} size="medium" class="icon"></lightning-icon>
+            </div>
+            <div class="slds-align_absolute-center slds-col slds-size_1-of-8">
+                <div><lightning-relative-date-time value={game.modifiedDateObject}></lightning-relative-date-time></div>
+                <div><lightning-formatted-date-time value={game.createdDate} month="short" day="2-digit"></lightning-formatted-date-time></div>
+            </div>
+            <div class="slds-align_absolute-center slds-col slds-size_1-of-8">
+                <lightning-button onmouseenter={handleCurrentPlayerButtonEnter} onmouseout={handleCurrentPlayerButtonLeave} label={game.currentPlayer.name}></lightning-button>
+            </div>
+            <div class="slds-align_absolute-center slds-col slds-size_1-of-8">
+                <lightning-badge label={outcomeBadgeLabel}></lightning-badge>
+            </div>
+            <div class="slds-align_absolute-center slds-col slds-size_1-of-8">
+                <template if:false={rematching}>
+                    <lightning-button onclick={handleOpponentButtonClick} onmouseenter={handleOpponentButtonEnter} onmouseout={handleOpponentButtonLeave}  label={game.opponent.name}></lightning-button>
+                </template>
+                <template if:true={rematching}>
+                    <lightning-button-group>
+                        <lightning-button-icon onclick={rematchRock} variant="border-filled" icon-name={rockIconName}></lightning-button-icon>
+                        <lightning-button-icon onclick={rematchPaper} variant="border-filled" icon-name={paperIconName}></lightning-button-icon>
+                        <lightning-button-icon onclick={rematchScissors} variant="border-filled" icon-name={scissorsIconName}></lightning-button-icon>
+                        <lightning-button-icon onclick={unrematch} variant="border-filled" icon-name={cancelIconName}></lightning-button-icon>
+                    </lightning-button-group>
+                </template>
+            </div>
+            <div class="slds-align_absolute-center slds-col slds-size_1-of-8">
+                <lightning-button-icon variant="border-filled" icon-name={currentPlayerMoveIcon}></lightning-button-icon>
+            </div>
+            <div class="slds-align_absolute-center slds-col slds-size_1-of-8">
+                <lightning-badge label={outcomeBadgeLabel}></lightning-badge>
+            </div>
+            <div class="slds-align_absolute-center slds-col slds-size_1-of-8">
+                <lightning-button-icon variant="border-filled" icon-name={opponentMoveIcon}></lightning-button-icon>
+            </div>
+        </div>
+    </div>
+</template>

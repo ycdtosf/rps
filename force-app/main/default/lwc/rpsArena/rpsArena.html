@@ -1,0 +1,122 @@
+<template>
+
+    <div class="slds-box slds-theme_default">
+        <template if:true={games}>
+            <template for:each={games} for:item="game">
+                <c-rps-arena-game key={game.gameId} game={game}></c-rps-arena-game>
+            </template>
+        </template>
+    </div>
+
+    
+    <!--
+    <div class="slds-grid slds-wrap slds-gutters">
+        
+        <div class="slds-col slds-size_1-of-2">
+            <template if:true={pendingGames}>
+                <div class="slds-box slds-theme_default">
+                    <div class="slds-text-heading_large slds-p-bottom_large">My Pending Games</div>
+                    <template for:each={pendingGames} for:item="game">
+                        <div key={game.Id} class="slds-box slds-theme_shade">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">U1 U1</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">VS.</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">U2 U2</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">
+                                    <lightning-button-icon icon-name={game.winningMoveIcon}></lightning-button-icon>
+                                </div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">VS.</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">
+                                    <lightning-button-icon icon-name="utility:question"></lightning-button-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2">
+            <template if:true={wonGames}>
+                <div class="slds-box slds-theme_default">
+                    <div class="slds-text-heading_large slds-p-bottom_large">My Victories</div>
+                    <template for:each={wonGames} for:item="game">
+                        <div key={game.Id} class="slds-box slds-theme_shade">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">U1 U1</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">BEATS</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">U2 U2</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">
+                                    <lightning-button-icon icon-name={game.winningMoveIcon}></lightning-button-icon>
+                                </div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">BEATS</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">
+                                    <lightning-button-icon icon-name={game.losingMoveIcon}></lightning-button-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2">
+            <template if:true={lostGames}>
+                <div class="slds-box slds-theme_default">
+                    <div class="slds-text-heading_large slds-p-bottom_large">My Defeats</div>
+                    <template for:each={lostGames} for:item="game">
+                        <div key={game.Id} class="slds-box slds-theme_shade">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">U1 U1</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">BEATS</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">U2 U2</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">
+                                    <lightning-button-icon icon-name={game.winningMoveIcon}></lightning-button-icon>
+                                </div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">BEATS</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">
+                                    <lightning-button-icon icon-name={game.losingMoveIcon}></lightning-button-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2">
+            <template if:true={tieGames}>
+                <div class="slds-box slds-theme_default">
+                    <div class="slds-text-heading_large slds-p-bottom_large">My Stalemates</div>
+                    <template for:each={tieGames} for:item="game">
+                        <div key={game.Id} class="slds-box slds-theme_shade">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">U1 U1</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">TIES</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">U2 U2</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">
+                                    <lightning-button-icon icon-name={game.winningMoveIcon}></lightning-button-icon>
+                                </div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">TIES</div>
+                                <div class="slds-align_absolute-center slds-col slds-size_1-of-6">
+                                    <lightning-button-icon icon-name={game.losingMoveIcon}></lightning-button-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+
+    </div>
+-->
+
+    <!--
+    <div>Opponent / Created Date / Actions</div>
+    <div>My Victories</div>
+    <div>Opponent / Created Date / Actions by Player</div>
+    <div>My Defeats</div>
+    <div>Opponent / Created Date / Actions by Player</div>
+    -->
+</template>

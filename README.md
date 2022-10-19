@@ -37,3 +37,4 @@
 * Private Games: share with Players
 * RPS Settings Panel
 * Choose visibility on the Game
+* Taunt your opponent

@@ -1,0 +1,31 @@
+:host {
+    --win-color-light: #91db8b;
+    --win-color-dark: #2e844a;
+    --lose-color-light: #feb8ab;
+    --lose-color-dark: #ea001e;
+    --pending-color-light: #f9e3b6;
+    --pending-color-dark: #e4a201;
+    --tie-color-light: #ecebea;
+    --tie-color-dark: #969492;
+    
+}
+
+.slds-box { border-width: 1px; }
+
+.slds-box lightning-badge { color: #FFF; }
+
+.slds-box.WIN { background-color: var(--win-color-light); border-color: var(--win-color-dark); }
+.slds-box.WIN lightning-badge { background-color: var(--win-color-dark); }
+.slds-box.WIN .icon { --slds-c-icon-color-foreground-default:  var(--win-color-dark); }
+
+.slds-box.LOSE { background-color: var(--lose-color-light); border-color: var(--lose-color-dark); }
+.slds-box.LOSE lightning-badge { background-color: var(--lose-color-dark); }
+.slds-box.LOSE .icon { --slds-c-icon-color-foreground-default:  var(--lose-color-dark); }
+
+.slds-box.PENDING { background-color: var(--pending-color-light); border-color: var(--pending-color-dark); }
+.slds-box.PENDING lightning-badge { background-color: var(--pending-color-dark); }
+.slds-box.PENDING .icon { --slds-c-icon-color-foreground-default:  var(--pending-color-dark); }
+
+.slds-box.TIE { background-color: var(--tie-color-light); border-color: var(--tie-color-dark); }
+.slds-box.TIE lightning-badge { background-color: var(--tie-color-dark); }
+.slds-box.TIE .icon { --slds-c-icon-color-foreground-default:  var(--tie-color-dark); }

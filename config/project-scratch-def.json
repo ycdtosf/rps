@@ -1,6 +1,7 @@
 {
-  "orgName": "tom company",
+  "orgName": "RPS",
   "edition": "Developer",
+  "release" : "preview",
   "features": ["EnableSetPasswordInApi"],
   "settings": {
     "lightningExperienceSettings": {

@@ -56,7 +56,6 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>User__c</fields>
-        <fields>PlayerMove__c</fields>
         <fields>Status__c</fields>
         <relatedList>Player__c.Game__c</relatedList>
     </relatedLists>
