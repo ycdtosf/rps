@@ -20,9 +20,9 @@
                 </template>
                 <template if:true={rematching}>
                     <lightning-button-group>
-                        <lightning-button-icon onclick={rematchRock} variant="border-filled" icon-name={rockIconName}></lightning-button-icon>
-                        <lightning-button-icon onclick={rematchPaper} variant="border-filled" icon-name={paperIconName}></lightning-button-icon>
-                        <lightning-button-icon onclick={rematchScissors} variant="border-filled" icon-name={scissorsIconName}></lightning-button-icon>
+                        <lightning-button-icon data-move-name="rock" onclick={rematch} variant="border-filled" icon-name={rockIconName}></lightning-button-icon>
+                        <lightning-button-icon data-move-name="paper" onclick={rematch} variant="border-filled" icon-name={paperIconName}></lightning-button-icon>
+                        <lightning-button-icon data-move-name="scissors" onclick={rematch} variant="border-filled" icon-name={scissorsIconName}></lightning-button-icon>
                         <lightning-button-icon onclick={unrematch} variant="border-filled" icon-name={cancelIconName}></lightning-button-icon>
                     </lightning-button-group>
                 </template>

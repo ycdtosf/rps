@@ -30,4 +30,8 @@ export default class RpsArena extends LightningElement {
         }
     }
 
+    handleNewGame(e) {
+        this.games.unshift(e.detail);
+    }
+
 }

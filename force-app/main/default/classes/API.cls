@@ -15,12 +15,14 @@ public class API {
     cgr.moveId = [select Id from Move__c where Name = 'Paper' limit 1].Id;
     API.createGame(cgr);
     */
-    @AuraEnabled
-    public static void createGame(CreateGameRequest createGameRequest) {
+    @AuraEnabled   
+    public static GameData createGame(CreateGameRequest createGameRequest) {
+        system.debug(createGameRequest);
         Map<String, Object> inputs = new Map<String, Object>();
         inputs.put('createGameRequest', createGameRequest);
         Flow.Interview.Create_Game f = new Flow.Interview.Create_Game(inputs);
         f.start();
+        return (GameData)f.getVariableValue('gameData'); 
     }
 
     /*

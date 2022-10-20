@@ -3,7 +3,7 @@
     <div class="slds-box slds-theme_default">
         <template if:true={games}>
             <template for:each={games} for:item="game">
-                <c-rps-arena-game key={game.gameId} game={game}></c-rps-arena-game>
+                <c-rps-arena-game onnewgame={handleNewGame} key={game.gameId} game={game} moves={moves}></c-rps-arena-game>
             </template>
         </template>
     </div>

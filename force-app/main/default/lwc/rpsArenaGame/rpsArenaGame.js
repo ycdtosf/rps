@@ -6,6 +6,7 @@ export default class RpsArenaGame extends LightningElement {
     
     userId = getUserId;
     @api game;
+    @api moves;
     rematching = false;
 
     winWords = ['beats', 'defeats', 'conquers', 'vanquishes', 'trounces', 'bests', 'prevails over'];
@@ -143,7 +144,7 @@ export default class RpsArenaGame extends LightningElement {
     }
 
     handleOpponentButtonEnter(e) {
-        if(this.game.status === 'PENDING') return;
+        if(this.outcome === 'PENDING' || this.game.rematchGameId !== undefined) return;
         e.target.label = "REMATCH?";
     }
 
@@ -152,38 +153,47 @@ export default class RpsArenaGame extends LightningElement {
     }
 
     handleOpponentButtonClick(e) {
-        if(this.game.status === 'PENDING') return;
+        if(this.outcome === 'PENDING' || this.game.rematchGameId !== undefined) return;
         this.rematching = true;
     }
 
-    rematchRock(e) {
-        
+    findMoveByName(moveName) {
+        return this.moves.find((element) => {
+            return element.Name.toLowerCase() === moveName;
+        });
     }
 
-    rematchPaper(e) {
-
-    }
-
-    rematchScissors(e) {
-
+    async rematch(e) {
+        let move = this.findMoveByName(e.target.dataset.moveName);
+        await this.call_createGame(move.Id);
     }
 
     unrematch(e) {
         this.rematching = false;
     }
 
-    async call_createGame() {
+    async call_createGame(moveId) {
         try {
-            await createGame({
-                // params
-            })
+            let gameData = await createGame({ 
+                createGameRequest : { 
+                    userId : this.userId,
+                    opponentUserId : this.game.opponent.userId,
+                    moveId : moveId,
+                    isRematch : true,
+                    previousGameId : this.game.gameId
+                }
+            });
+            this.game.rematchGameId = gameData.gameId;
+            this.unrematch();
+            this.dispatchEvent(new CustomEvent("newgame", { detail: gameData }));
+
+            // TODO: tell rpsArena
         }
         catch(error) {
             console.log(error);
         }
         finally {
-            console.log('RpsArena component initialized.');
-            this.inited = true;
+            console.log('Create Game completed.');
         }
     }
 

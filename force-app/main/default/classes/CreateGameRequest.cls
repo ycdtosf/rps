@@ -1,7 +1,7 @@
 public class CreateGameRequest {
-    @AuraEnabled public Id userId;
-    @AuraEnabled public Id opponentUserId;
-    @AuraEnabled public Id moveId;
-    @AuraEnabled public Boolean isRematch;
-    @AuraEnabled public Id previousMatchId;
+    @AuraEnabled public Id userId { get; set; }
+    @AuraEnabled public Id opponentUserId { get; set; }
+    @AuraEnabled public Id moveId { get; set; }
+    @AuraEnabled public Boolean isRematch { get; set; }
+    @AuraEnabled public Id previousGameId { get; set; }
 }

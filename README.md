@@ -38,3 +38,6 @@
 * RPS Settings Panel
 * Choose visibility on the Game
 * Taunt your opponent
+* Rematch - only once per game
+* UI - show rematch indicator
+* child-to-parent event for create game data
