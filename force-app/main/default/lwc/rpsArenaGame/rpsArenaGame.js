@@ -5,9 +5,19 @@ import createGame from '@salesforce/apex/API.createGame';
 export default class RpsArenaGame extends LightningElement {
     
     userId = getUserId;
-    @api game;
+    
+    _game;
+    @api set game(val) {
+        this._game = val;
+        this.rematchGameId = this._game.rematchGameId;
+    }
+    get game() {
+        return this._game;
+    }
+
     @api moves;
     rematching = false;
+    rematchGameId;
 
     winWords = ['beats', 'defeats', 'conquers', 'vanquishes', 'trounces', 'bests', 'prevails over'];
     loseWords = ['loses to', 'bows to', 'concedes to', 'defeated by', 'submits to', 'yields to', 'says uncle to'];
@@ -122,7 +132,7 @@ export default class RpsArenaGame extends LightningElement {
     }
 
     getMoveIconName(player) {
-        if(player.move === '') {
+        if(player.move === undefined) {
             if(player.userId === this.userId) {
                 return null;
             }
@@ -144,7 +154,7 @@ export default class RpsArenaGame extends LightningElement {
     }
 
     handleOpponentButtonEnter(e) {
-        if(this.outcome === 'PENDING' || this.game.rematchGameId !== undefined) return;
+        if(this.outcome === 'PENDING' || this.rematchGameId !== undefined) return;
         e.target.label = "REMATCH?";
     }
 
@@ -153,7 +163,7 @@ export default class RpsArenaGame extends LightningElement {
     }
 
     handleOpponentButtonClick(e) {
-        if(this.outcome === 'PENDING' || this.game.rematchGameId !== undefined) return;
+        if(this.outcome === 'PENDING' || this.rematchGameId !== undefined) return;
         this.rematching = true;
     }
 
@@ -183,9 +193,11 @@ export default class RpsArenaGame extends LightningElement {
                     previousGameId : this.game.gameId
                 }
             });
-            this.game.rematchGameId = gameData.gameId;
+            this.rematchGameId = gameData.gameId;
             this.unrematch();
-            this.dispatchEvent(new CustomEvent("newgame", { detail: gameData }));
+            let newGameData = JSON.parse(JSON.stringify(gameData));
+            newGameData.rematchGameId = this.rematchGameId;
+            this.dispatchEvent(new CustomEvent("newgame", { detail: newGameData }));
 
             // TODO: tell rpsArena
         }

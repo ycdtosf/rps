@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
+    <assignments>
+        <name>Set_Records</name>
+        <label>Set Records</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>records</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Moves</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
     <environments>Default</environments>
     <interviewLabel>Get Moves {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Get Moves</label>
@@ -29,6 +42,9 @@
         <locationX>176</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Records</targetReference>
+        </connector>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Move__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>

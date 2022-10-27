@@ -44,6 +44,11 @@
     <custom>false</custom>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Game__c.Rematch__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Game__c.Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -55,6 +60,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Outcome__c.Winner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlayerMove__c.Game__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlayerMove__c.IsCurrentUser__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -90,6 +105,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Player__c.Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Player__c.UserName__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
+    <assignments>
+        <name>Set_Game_Data</name>
+        <label>Set Game Data</label>
+        <locationX>182</locationX>
+        <locationY>1214</locationY>
+        <assignmentItems>
+            <assignToReference>gameData.gameId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Create_Game</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.createdDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.modifiedDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Pending</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.currentPlayer.userId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>createGameRequest.userId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.currentPlayer.status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Played</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.currentPlayer.playerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Create_Player</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.opponent.status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Pending</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.opponent.userId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>createGameRequest.opponentUserId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.opponent.playerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Create_Opponent</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>Rematch</name>
+        <label>Rematch?</label>
+        <locationX>182</locationX>
+        <locationY>878</locationY>
+        <defaultConnector>
+            <targetReference>Set_Game_Data</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>createGameRequest.isRematch</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Previous_Game_Rematch_Field</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Create Game {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Create Game</label>
@@ -26,7 +127,7 @@
     <recordCreates>
         <name>Create_Game</name>
         <label>Create Game</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>158</locationY>
         <connector>
             <targetReference>Create_Player</targetReference>
@@ -43,7 +144,7 @@
     <recordCreates>
         <name>Create_Opponent</name>
         <label>Create Opponent</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>398</locationY>
         <connector>
             <targetReference>Update_Player</targetReference>
@@ -76,9 +177,33 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <description>Creates Player Move record without a move chosen for the opponent.</description>
+        <name>Create_Opponent_Player_Move</name>
+        <label>Create Opponent Player Move</label>
+        <locationX>182</locationX>
+        <locationY>758</locationY>
+        <connector>
+            <targetReference>Rematch</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Game__c</field>
+            <value>
+                <elementReference>Create_Game</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Player__c</field>
+            <value>
+                <elementReference>Create_Opponent</elementReference>
+            </value>
+        </inputAssignments>
+        <object>PlayerMove__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Player</name>
         <label>Create Player</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>278</locationY>
         <connector>
             <targetReference>Create_Opponent</targetReference>
@@ -107,8 +232,17 @@
     <recordCreates>
         <name>Create_Player_Move</name>
         <label>Create Player Move</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>638</locationY>
+        <connector>
+            <targetReference>Create_Opponent_Player_Move</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Game__c</field>
+            <value>
+                <elementReference>Create_Game</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Move__c</field>
             <value>
@@ -127,7 +261,7 @@
     <recordUpdates>
         <name>Update_Player</name>
         <label>Update Player</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>518</locationY>
         <connector>
             <targetReference>Create_Player_Move</targetReference>
@@ -148,8 +282,33 @@
         </inputAssignments>
         <object>Player__c</object>
     </recordUpdates>
-    <start>
+    <recordUpdates>
+        <name>Update_Previous_Game_Rematch_Field</name>
+        <label>Update Previous Game Rematch Field</label>
         <locationX>50</locationX>
+        <locationY>998</locationY>
+        <connector>
+            <targetReference>Set_Game_Data</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>createGameRequest.previousGameId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Rematch__c</field>
+            <value>
+                <elementReference>Create_Game</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Game__c</object>
+    </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    <start>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Create_Game</targetReference>
@@ -163,5 +322,13 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>gameData</name>
+        <apexClass>GameData</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
 </Flow>

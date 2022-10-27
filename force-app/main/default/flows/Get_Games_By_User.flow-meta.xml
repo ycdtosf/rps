@@ -1,9 +1,331 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Get_Unique_Game_Ids</name>
+        <label>Get Unique Game Ids</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <actionName>Collection_getUniqueStringValues</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Get_Players_By_Games</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__records</typeName>
+            <typeValue>Player__c</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>field</name>
+            <value>
+                <stringValue>Game__c</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>records</name>
+            <value>
+                <elementReference>Get_Current_Players_By_User</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Get_Unique_Player_Ids</name>
+        <label>Get Unique Player Ids</label>
+        <locationX>176</locationX>
+        <locationY>518</locationY>
+        <actionName>Collection_getUniqueStringValues</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Get_Player_Moves</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__records</typeName>
+            <typeValue>Player__c</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>field</name>
+            <value>
+                <stringValue>Id</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>records</name>
+            <value>
+                <elementReference>Get_Players_By_Games</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>55.0</apiVersion>
+    <assignments>
+        <name>Add_To_Collection</name>
+        <label>Add To Collection</label>
+        <locationX>660</locationX>
+        <locationY>1694</locationY>
+        <assignmentItems>
+            <assignToReference>gameDataCollection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>gameData</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Increment_Counter</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Clear_Move_Value</name>
+        <label>Clear Move Value</label>
+        <locationX>528</locationX>
+        <locationY>1358</locationY>
+        <assignmentItems>
+            <assignToReference>currentPlayerData.move</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Opponent_Data</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Create_Game_Data_and_Current_Player_Data</name>
+        <label>Create Game Data and Current Player Data</label>
+        <locationX>264</locationX>
+        <locationY>1238</locationY>
+        <assignmentItems>
+            <assignToReference>gameData.gameId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Player_Moves.Game__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.currentPlayer</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>currentPlayerData</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.createdDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Player_Moves.Game__r.CreatedDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.modifiedDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Player_Moves.Game__r.LastModifiedDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Player_Moves.Game__r.Status__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>gameData.rematchGameId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Player_Moves.Game__r.Rematch__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Increment_Counter</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Create_Opponent_Data</name>
+        <label>Create Opponent Data</label>
+        <locationX>660</locationX>
+        <locationY>1574</locationY>
+        <assignmentItems>
+            <assignToReference>gameData.opponent</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>currentPlayerData</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_To_Collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Increment_Counter</name>
+        <label>Increment Counter</label>
+        <locationX>462</locationX>
+        <locationY>1910</locationY>
+        <assignmentItems>
+            <assignToReference>loopPlayersByGamesCounter</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Player_Moves</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Player_Data</name>
+        <label>Set Player Data</label>
+        <locationX>462</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>currentPlayerData.name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Player_Moves.Player__r.UserName__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>currentPlayerData.status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Player_Moves.Player__r.Status__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>currentPlayerData.playerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Player_Moves.Player__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>currentPlayerData.userId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Player_Moves.Player__r.User__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>currentPlayerData.move</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Player_Moves.Move__r.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Counter</targetReference>
+        </connector>
+    </assignments>
+    <collectionProcessors>
+        <name>Sort_Player_Results</name>
+        <elementSubtype>SortCollectionProcessor</elementSubtype>
+        <label>Sort Player Results</label>
+        <locationX>176</locationX>
+        <locationY>758</locationY>
+        <collectionProcessorType>SortCollectionProcessor</collectionProcessorType>
+        <collectionReference>Get_Player_Moves</collectionReference>
+        <connector>
+            <targetReference>Loop_Player_Moves</targetReference>
+        </connector>
+        <limit>50</limit>
+        <sortOptions>
+            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
+            <sortField>Game__c</sortField>
+            <sortOrder>Desc</sortOrder>
+        </sortOptions>
+        <sortOptions>
+            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
+            <sortField>IsCurrentUser__c</sortField>
+            <sortOrder>Desc</sortOrder>
+        </sortOptions>
+    </collectionProcessors>
+    <decisions>
+        <name>Check_Counter</name>
+        <label>Check Counter</label>
+        <locationX>462</locationX>
+        <locationY>1118</locationY>
+        <defaultConnector>
+            <targetReference>Game_Status_Pending</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Odd</defaultConnectorLabel>
+        <rules>
+            <name>Even</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>counterIsEven</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Game_Data_and_Current_Player_Data</targetReference>
+            </connector>
+            <label>Even</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Game_Status_Pending</name>
+        <label>Game Status Pending?</label>
+        <locationX>660</locationX>
+        <locationY>1238</locationY>
+        <defaultConnector>
+            <targetReference>Create_Opponent_Data</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Game_Status_Pending_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_Player_Moves.Game__r.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pending</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Clear_Move_Value</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>calculateOutcome</name>
+        <dataType>String</dataType>
+        <expression>CASE(
+   {!Loop_Player_Moves.Game__r.Status__c},
+   &apos;Pending&apos;, &apos;Pending&apos;,
+   &apos;Tie&apos;, &apos;Tie&apos;,
+   &apos;Completed&apos;, IF({!currentPlayerData.userId} == &apos;1&apos;, &apos;foo&apos;, &apos;bar&apos;),
+   &apos;BORK&apos;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>counterIsEven</name>
+        <dataType>Boolean</dataType>
+        <expression>{!loopPlayersByGamesCounter} == 0 || MOD({!loopPlayersByGamesCounter},2) == 0</expression>
+    </formulas>
+    <formulas>
+        <name>currentPlayerName</name>
+        <dataType>String</dataType>
+        <expression>{!Loop_Player_Moves.Player__r.UserName__c}</expression>
+    </formulas>
     <interviewLabel>Get Games By User {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Get Games By User</label>
+    <loops>
+        <name>Loop_Player_Moves</name>
+        <label>Loop Player Moves</label>
+        <locationX>176</locationX>
+        <locationY>878</locationY>
+        <collectionReference>Get_Player_Moves</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Set_Player_Data</targetReference>
+        </nextValueConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -24,23 +346,13 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <name>Get_Games_By_User</name>
-        <label>Get Games By User</label>
-        <locationX>176</locationX>
-        <locationY>278</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Game__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Players_By_User</name>
-        <label>Get Players By User</label>
+        <name>Get_Current_Players_By_User</name>
+        <label>Get Current Players By User</label>
         <locationX>176</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Games_By_User</targetReference>
+            <targetReference>Get_Unique_Game_Ids</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -52,16 +364,104 @@
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Player__c</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Player_Moves</name>
+        <label>Get Player Moves</label>
+        <locationX>176</locationX>
+        <locationY>638</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Sort_Player_Results</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Player__c</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>Get_Unique_Player_Ids</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>PlayerMove__c</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Players_By_Games</name>
+        <label>Get Players By Games</label>
+        <locationX>176</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Unique_Player_Ids</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Game__c</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>Get_Unique_Game_Ids</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Player__c</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Players_By_User</targetReference>
+            <targetReference>Get_Current_Players_By_User</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
+    <variables>
+        <name>currentItem_Get_Current_Player</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Player__c</objectType>
+    </variables>
+    <variables>
+        <name>currentPlayerData</name>
+        <apexClass>PlayerData</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>currentPlayersFilter</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Player__c</objectType>
+    </variables>
+    <variables>
+        <name>gameData</name>
+        <apexClass>GameData</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>gameDataCollection</name>
+        <apexClass>GameData</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
     <variables>
         <name>getGameRequest</name>
         <apexClass>GetGameRequest</apexClass>
@@ -69,5 +469,24 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>loopPlayersByGamesCounter</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>opponentsFilter</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Player__c</objectType>
     </variables>
 </Flow>
